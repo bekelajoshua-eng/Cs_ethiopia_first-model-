@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ethiopian CS Exit Exam | 100 Unique Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f4f8;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 1.5rem;
+            color: #1a2c3e;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .exam-header {
+            background: linear-gradient(135deg, #0b2b3b, #1a4b6e);
+            color: white;
+            border-radius: 28px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            opacity: 0.85;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .score-area {
+            background: #ffd966;
+            color: #2c3e2f;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: inline-block;
+        }
+
+        .answered-count {
+            background: #ffffff30;
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        button {
+            background: #f4b942;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #ffa71a;
+            transform: scale(1.02);
+        }
+
+        .reset-btn {
+            background: #e2e8f0;
+            color: #1e2a2e;
+            margin-left: 12px;
+        }
+
+        .reset-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(560px, 1fr));
+            gap: 1.4rem;
+            margin-bottom: 3rem;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+            border-left: 6px solid #2c7da0;
+            transition: 0.1s;
+        }
+
+        .question-card.correct-highlight {
+            border-left-color: #2e7d32;
+            background: #f1f9f0;
+        }
+
+        .question-card.incorrect-highlight {
+            border-left-color: #c62828;
+            background: #fff6f5;
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .q-num {
+            background: #1e4a6b;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+        }
+
+        .q-course {
+            background: #e9ecef;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #2c3e50;
+            font-weight: normal;
+        }
+
+        .q-text {
+            font-weight: 500;
+            margin: 0.5rem 0 1rem 0;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f8fafc;
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .option-label:hover {
+            background: #e6edf4;
+        }
+
+        input[type="radio"] {
+            accent-color: #2c7da0;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .feedback-icon {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .correct-badge { color: #2e7d32; }
+        .wrong-badge { color: #c62828; }
+
+        .result-panel {
+            background: white;
+            border-radius: 30px;
+            padding: 1.4rem 2rem;
+            margin-top: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            position: sticky;
+            bottom: 1rem;
+            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.96);
+        }
+
+        .result-text {
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .mistake-summary {
+            margin-top: 1rem;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f1f5f9;
+            border-radius: 24px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        .mistake-item {
+            padding: 4px 0;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #5f6c7a;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .questions-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="exam-header">
+        <h1>📘 CS Mock Exit Exam – Ethiopia</h1>
+        <div class="sub">100 unique questions | Computer Science core domains</div>
+        <div class="stats-bar">
+            <div class="answered-count" id="answeredCounter">📌 Answered: 0 / 100</div>
+            <div class="score-area" id="liveScoreDisplay">⚡ Not submitted yet</div>
+            <div>
+                <button id="submitBtn">✅ SUBMIT & GRADE</button>
+                <button id="resetBtn" class="reset-btn">🔄 Reset all</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="questionsContainer" class="questions-grid"></div>
+
+    <div id="resultPanel" class="result-panel" style="display: none;">
+        <div class="result-text" id="finalScoreText">Your Score: --/100</div>
+        <div id="mistakeList" class="mistake-summary"></div>
+        <button id="scrollTopBtn" style="margin-top: 12px; background:#e9ecef;">⬆️ Scroll to top</button>
+    </div>
+    <footer>Select one answer per question. Submit to see your result out of 100. Green = correct, red = wrong/unanswered.</footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // CORRECT UNIQUE QUESTIONS (100) from user's latest list
+    // Format: id, course, text, options array, answer (A/B/C/D)
+    // --------------------------------------------------------------
+    const questionsData = [
+        {id:1, course:"Operating Systems", text:"Which scheduling algorithm gives minimum average waiting time?", options:["FCFS","Round Robin","Shortest Job First","FIFO"], answer:"C"},
+        {id:2, course:"Database", text:"Which SQL command removes a table?", options:["DELETE","DROP","REMOVE","CLEAR"], answer:"B"},
+        {id:3, course:"Networks", text:"Which protocol translates domain names to IP addresses?", options:["HTTP","DNS","SMTP","FTP"], answer:"B"},
+        {id:4, course:"Data Structures", text:"Which data structure follows FIFO?", options:["Stack","Queue","Tree","Graph"], answer:"B"},
+        {id:5, course:"Algorithms", text:"What is the complexity of binary search?", options:["O(n)","O(log n)","O(n²)","O(1)"], answer:"B"},
+        {id:6, course:"AI", text:"A* search uses which evaluation function?", options:["g+h","h only","g only","n²"], answer:"A"},
+        {id:7, course:"Compiler", text:"Which phase creates tokens?", options:["Parsing","Lexical analysis","Optimization","Execution"], answer:"B"},
+        {id:8, course:"Software Engineering", text:"Which model is iterative?", options:["Waterfall","V-model","Spiral","Prototype"], answer:"C"},
+        {id:9, course:"OOP", text:"Which concept hides internal implementation?", options:["Inheritance","Encapsulation","Polymorphism","Association"], answer:"B"},
+        {id:10, course:"Web Programming", text:"Which HTML tag creates a hyperlink?", options:["img","a","link","href"], answer:"B"},
+        {id:11, course:"Operating Systems", text:"What is the primary purpose of a deadlock detection algorithm?", options:["To prevent deadlocks","To identify existing deadlocks","To allocate resources fairly","To schedule processes"], answer:"B"},
+        {id:12, course:"Database", text:"Which normal form eliminates transitive dependencies?", options:["1NF","2NF","3NF","BCNF"], answer:"C"},
+        {id:13, course:"Networks", text:"Which layer of the OSI model is responsible for routing?", options:["Data Link","Network","Transport","Session"], answer:"B"},
+        {id:14, course:"Data Structures", text:"What is the worst-case time complexity for searching in a balanced BST?", options:["O(n)","O(log n)","O(1)","O(n log n)"], answer:"B"},
+        {id:15, course:"Algorithms", text:"Which algorithm is used to find the shortest path in a graph with negative edge weights?", options:["Dijkstra's","Bellman-Ford","Prim's","Kruskal's"], answer:"B"},
+        {id:16, course:"AI", text:"In machine learning, what is overfitting?", options:["Model performs well on training data but poorly on unseen data","Model underperforms on training data","Model uses too few features","Model trains too quickly"], answer:"A"},
+        {id:17, course:"Compiler", text:"What is the output of the semantic analysis phase?", options:["Lexemes","Parse tree with type checking","Assembly code","Machine code"], answer:"B"},
+        {id:18, course:"Software Engineering", text:"What does CI/CD stand for?", options:["Continuous Integration / Continuous Deployment","Code Implementation / Code Delivery","Computer Interface / Computer Design","Central Index / Central Database"], answer:"A"},
+        {id:19, course:"OOP", text:"Which principle suggests that software entities should be open for extension but closed for modification?", options:["Single Responsibility","Open/Closed","Liskov Substitution","Dependency Inversion"], answer:"B"},
+        {id:20, course:"Web Programming", text:"Which HTTP method is idempotent and used to retrieve data without side effects?", options:["POST","PUT","GET","DELETE"], answer:"C"},
+        {id:21, course:"Operating Systems", text:"What type of memory is used to cache frequently accessed page table entries?", options:["ROM","TLB","Cache","Swap"], answer:"B"},
+        {id:22, course:"Database", text:"Which SQL clause is used to filter groups after aggregation?", options:["WHERE","HAVING","GROUP BY","ORDER BY"], answer:"B"},
+        {id:23, course:"Networks", text:"What is the default subnet mask for a Class C IPv4 address?", options:["255.0.0.0","255.255.0.0","255.255.255.0","255.255.255.255"], answer:"C"},
+        {id:24, course:"Data Structures", text:"Which data structure is best suited for implementing recursion?", options:["Queue","Stack","Linked List","Hash Table"], answer:"B"},
+        {id:25, course:"Algorithms", text:"What is the time complexity of merge sort in all cases?", options:["O(n)","O(n log n)","O(n²)","O(log n)"], answer:"B"},
+        {id:26, course:"AI", text:"Which algorithm is commonly used for classification tasks and is based on probability?", options:["K-Means","Naive Bayes","Linear Regression","Apriori"], answer:"B"},
+        {id:27, course:"Compiler", text:"What is the purpose of an intermediate representation (IR) in a compiler?", options:["To optimize and translate code independently of the target machine","To store variable names","To handle I/O operations","To manage memory"], answer:"A"},
+        {id:28, course:"Software Engineering", text:"In Agile methodology, what is a 'sprint'?", options:["A long-term project phase","A fixed-length iteration for delivering work","A bug-fixing session","A team meeting"], answer:"B"},
+        {id:29, course:"OOP", text:"What is method overriding?", options:["Defining multiple methods with the same name in the same class","Redefining a base class method in a derived class","Calling a method from another class","Hiding a method"], answer:"B"},
+        {id:30, course:"Web Programming", text:"Which CSS property is used to change the text color?", options:["font-color","text-color","color","background-color"], answer:"C"},
+        {id:31, course:"Operating Systems", text:"Which page replacement algorithm suffers from Belady's anomaly?", options:["LRU","Optimal","FIFO","MRU"], answer:"C"},
+        {id:32, course:"Database", text:"What is a foreign key?", options:["A key that uniquely identifies a record","A key that references a primary key in another table","A composite key","A candidate key"], answer:"B"},
+        {id:33, course:"Networks", text:"Which protocol ensures reliable, connection-oriented data transmission?", options:["UDP","TCP","ICMP","ARP"], answer:"B"},
+        {id:34, course:"Data Structures", text:"In a hash table, what is a collision?", options:["When two keys map to the same index","When the table is full","When a key is not found","When resizing occurs"], answer:"A"},
+        {id:35, course:"Algorithms", text:"Which problem is solved using dynamic programming?", options:["Sorting an array","Finding the longest common subsequence","Traversing a tree","Matrix multiplication"], answer:"B"},
+        {id:36, course:"AI", text:"What is the main purpose of a convolutional neural network (CNN)?", options:["Processing sequential data","Image and video recognition","Natural language translation","Reinforcement learning"], answer:"B"},
+        {id:37, course:"Compiler", text:"What is a context-free grammar used for in compiler design?", options:["Lexical analysis","Syntax analysis","Code optimization","Linking"], answer:"B"},
+        {id:38, course:"Software Engineering", text:"What is the primary goal of unit testing?", options:["To test the entire system","To test individual components or functions","To test user interface","To test network performance"], answer:"B"},
+        {id:39, course:"OOP", text:"Which design pattern ensures a class has only one instance?", options:["Factory","Singleton","Observer","Strategy"], answer:"B"},
+        {id:40, course:"Web Programming", text:"What does REST stand for in web architecture?", options:["Remote Execution System Technology","Representational State Transfer","Reliable Encrypted Secure Transmission","Real-time Event Stream Transfer"], answer:"B"},
+        {id:41, course:"Operating Systems", text:"What is thrashing in an OS?", options:["Excessive CPU usage","Excessive paging leading to poor performance","Disk fragmentation","Network latency"], answer:"B"},
+        {id:42, course:"Database", text:"Which ACID property ensures that a transaction is either fully completed or not executed at all?", options:["Atomicity","Consistency","Isolation","Durability"], answer:"A"},
+        {id:43, course:"Networks", text:"What is the purpose of NAT?", options:["Encrypt data","Translate private IP addresses to public ones","Route packets","Assign MAC addresses"], answer:"B"},
+        {id:44, course:"Data Structures", text:"What is the height of a complete binary tree with n nodes?", options:["O(n)","O(log n)","O(1)","O(n²)"], answer:"B"},
+        {id:45, course:"Algorithms", text:"Which algorithm uses a divide-and-conquer approach?", options:["Bubble Sort","Quick Sort","Insertion Sort","Selection Sort"], answer:"B"},
+        {id:46, course:"AI", text:"What is a hyperparameter in machine learning?", options:["A parameter learned during training","A configuration set before training begins","An output of the model","A dataset feature"], answer:"B"},
+        {id:47, course:"Compiler", text:"Which tool is commonly used for parser generation?", options:["Lex","Yacc/Bison","GDB","GCC"], answer:"B"},
+        {id:48, course:"Software Engineering", text:"What is technical debt?", options:["Financial cost of software","Implied cost of future rework due to quick/limited solutions","Cost of licensing","Salary of developers"], answer:"B"},
+        {id:49, course:"OOP", text:"What is polymorphism?", options:["Creating multiple classes","Ability of objects to take many forms","Hiding data","Inheriting properties"], answer:"B"},
+        {id:50, course:"Web Programming", text:"Which JavaScript method is used to select an HTML element by its ID?", options:["querySelector","getElementById","getElementByClass","findElement"], answer:"B"},
+        {id:51, course:"Operating Systems", text:"What is the role of a device driver?", options:["Manage CPU scheduling","Provide interface between OS and hardware","Allocate memory","Handle network packets"], answer:"B"},
+        {id:52, course:"Database", text:"What is a view in SQL?", options:["A physical table","A virtual table based on a query","An index","A stored procedure"], answer:"B"},
+        {id:53, course:"Networks", text:"Which port number is used for HTTPS?", options:["80","443","21","25"], answer:"B"},
+        {id:54, course:"Data Structures", text:"Which traversal visits the root, then left subtree, then right subtree?", options:["Inorder","Preorder","Postorder","Level-order"], answer:"B"},
+        {id:55, course:"Algorithms", text:"What is the space complexity of a recursive factorial function?", options:["O(1)","O(n)","O(log n)","O(n²)"], answer:"B"},
+        {id:56, course:"AI", text:"In reinforcement learning, what does the agent receive to guide learning?", options:["Labels","Rewards/Penalties","Features","Clusters"], answer:"B"},
+        {id:57, course:"Compiler", text:"What is dead code elimination?", options:["Removing unused variables/functions to optimize code","Deleting compiled files","Removing syntax errors","Skipping compilation"], answer:"A"},
+        {id:58, course:"Software Engineering", text:"What is the purpose of a UML sequence diagram?", options:["Show class relationships","Depict object interactions over time","Map database schema","Outline project timeline"], answer:"B"},
+        {id:59, course:"OOP", text:"Which access modifier makes a class member accessible only within the same class?", options:["public","private","protected","default"], answer:"B"},
+        {id:60, course:"Web Programming", text:"What is the primary purpose of a web server?", options:["Execute client-side scripts","Deliver web pages to clients upon request","Store databases","Compile code"], answer:"B"},
+        {id:61, course:"Operating Systems", text:"What is a semaphore used for?", options:["Process synchronization","Memory allocation","File compression","Network routing"], answer:"A"},
+        {id:62, course:"Database", text:"Which type of JOIN returns all records when there is a match in either left or right table?", options:["INNER JOIN","LEFT JOIN","RIGHT JOIN","FULL OUTER JOIN"], answer:"D"},
+        {id:63, course:"Networks", text:"What is the function of ARP?", options:["Map IP addresses to MAC addresses","Encrypt traffic","Assign IPs dynamically","Filter packets"], answer:"A"},
+        {id:64, course:"Data Structures", text:"What is the time complexity of inserting an element at the beginning of a singly linked list?", options:["O(1)","O(n)","O(log n)","O(n²)"], answer:"A"},
+        {id:65, course:"Algorithms", text:"Which algorithm is optimal for searching in an unsorted array?", options:["Binary Search","Linear Search","Jump Search","Interpolation Search"], answer:"B"},
+        {id:66, course:"AI", text:"What is the purpose of cross-validation?", options:["Increase training data","Evaluate model performance on unseen data","Reduce model complexity","Speed up training"], answer:"B"},
+        {id:67, course:"Compiler", text:"What is the symbol table used for?", options:["Store variable names, types, and scopes","Generate machine code","Parse expressions","Optimize loops"], answer:"A"},
+        {id:68, course:"Software Engineering", text:"What is refactoring?", options:["Adding new features","Restructuring existing code without changing external behavior","Fixing bugs","Rewriting from scratch"], answer:"B"},
+        {id:69, course:"OOP", text:"What is an abstract class?", options:["A class that cannot be instantiated and may contain abstract methods","A final class","A static class","A utility class"], answer:"A"},
+        {id:70, course:"Web Programming", text:"Which protocol is used for real-time bidirectional communication in web apps?", options:["HTTP/1.1","WebSocket","FTP","SMTP"], answer:"B"},
+        {id:71, course:"Operating Systems", text:"What is virtual memory?", options:["Physical RAM expansion","Technique using disk space to simulate RAM","Cloud storage","Cache memory"], answer:"B"},
+        {id:72, course:"Database", text:"What is normalization?", options:["Combining tables","Organizing data to reduce redundancy","Indexing data","Encrypting data"], answer:"B"},
+        {id:73, course:"Networks", text:"Which device operates at the Data Link layer?", options:["Hub","Switch","Router","Repeater"], answer:"B"},
+        {id:74, course:"Data Structures", text:"Which data structure uses a priority for element retrieval?", options:["Queue","Stack","Priority Queue","Deque"], answer:"C"},
+        {id:75, course:"Algorithms", text:"What is the worst-case time complexity of quicksort?", options:["O(n log n)","O(n)","O(n²)","O(log n)"], answer:"C"},
+        {id:76, course:"AI", text:"What is a confusion matrix used for?", options:["Training neural networks","Evaluating classification model performance","Feature selection","Hyperparameter tuning"], answer:"B"},
+        {id:77, course:"Compiler", text:"What is the difference between a compiler and an interpreter?", options:["Compiler translates entire program at once; interpreter executes line by line","Interpreter is faster","Compiler doesn't check errors","They are the same"], answer:"A"},
+        {id:78, course:"Software Engineering", text:"What is a version control system primarily used for?", options:["Debugging code","Tracking changes and collaborating on code","Running tests","Deploying apps"], answer:"B"},
+        {id:79, course:"OOP", text:"What is constructor overloading?", options:["Multiple constructors with different parameter lists","Multiple classes with same name","Inheriting multiple classes","Deleting constructors"], answer:"A"},
+        {id:80, course:"Web Programming", text:"What does JSON stand for?", options:["Java Standard Object Notation","JavaScript Object Notation","Joint Secure Online Network","JavaScript Online Notation"], answer:"B"},
+        {id:81, course:"Operating Systems", text:"What is a context switch?", options:["Saving/restoring CPU state to switch processes","Changing network configuration","Rebooting the system","Updating the OS"], answer:"A"},
+        {id:82, course:"Database", text:"Which SQL command modifies existing records?", options:["INSERT","UPDATE","ALTER","MODIFY"], answer:"B"},
+        {id:83, course:"Networks", text:"What is the maximum payload size of an Ethernet frame?", options:["1024 bytes","1500 bytes","4096 bytes","512 bytes"], answer:"B"},
+        {id:84, course:"Data Structures", text:"What is the load factor in a hash table?", options:["Number of buckets","Ratio of filled slots to total slots","Hash function complexity","Collision rate"], answer:"B"},
+        {id:85, course:"Algorithms", text:"Which technique solves overlapping subproblems optimally?", options:["Greedy","Dynamic Programming","Backtracking","Divide and Conquer"], answer:"B"},
+        {id:86, course:"AI", text:"What is the vanishing gradient problem?", options:["Gradients become too large during training","Gradients approach zero, slowing learning in deep networks","Data loss","Overfitting"], answer:"B"},
+        {id:87, course:"Compiler", text:"What is linking in the compilation process?", options:["Combining object files into an executable","Parsing source code","Optimizing loops","Generating assembly"], answer:"A"},
+        {id:88, course:"Software Engineering", text:"What is the purpose of a code review?", options:["To punish developers","To improve code quality and share knowledge","To delete old code","To test performance"], answer:"B"},
+        {id:89, course:"OOP", text:"Which relationship represents 'has-a'?", options:["Inheritance","Composition/Aggregation","Polymorphism","Abstraction"], answer:"B"},
+        {id:90, course:"Web Programming", text:"What is CORS used for?", options:["Compressing files","Controlling cross-origin resource sharing","Encrypting passwords","Routing APIs"], answer:"B"},
+        {id:91, course:"Operating Systems", text:"What is the purpose of an inode in a file system?", options:["Store file metadata and pointers to data blocks","Store file content","Encrypt files","Manage user permissions"], answer:"A"},
+        {id:92, course:"Database", text:"What is a trigger?", options:["A scheduled backup","A stored procedure that automatically executes on an event","An index","A view"], answer:"B"},
+        {id:93, course:"Networks", text:"Which protocol is connectionless and does not guarantee delivery?", options:["TCP","UDP","HTTP","FTP"], answer:"B"},
+        {id:94, course:"Data Structures", text:"What is the minimum number of nodes in a binary tree of height h?", options:["h","h+1","2^h","2^(h+1)-1"], answer:"B"},
+        {id:95, course:"Algorithms", text:"What does NP stand for in computational complexity?", options:["Non-Polynomial","Nondeterministic Polynomial time","Not Proven","Numerical Problem"], answer:"B"},
+        {id:96, course:"AI", text:"What is the purpose of dropout in neural networks?", options:["Increase layers","Reduce overfitting by randomly ignoring neurons during training","Speed up inference","Normalize data"], answer:"B"},
+        {id:97, course:"Compiler", text:"What is a regular expression used for in compilers?", options:["Syntax checking","Lexical pattern matching","Code generation","Memory management"], answer:"B"},
+        {id:98, course:"Software Engineering", text:"What is a microservices architecture?", options:["Single monolithic application","Collection of loosely coupled, independently deployable services","Client-server model","Peer-to-peer network"], answer:"B"},
+        {id:99, course:"OOP", text:"What is an interface?", options:["A class with only abstract methods and constants","A concrete class","A package","A module"], answer:"A"},
+        {id:100, course:"Web Programming", text:"Which HTTP status code indicates 'Not Found'?", options:["200","301","404","500"], answer:"C"}
+    ];
+
+    const totalQuestions = questionsData.length;
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+        questionsData.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${idx}`;
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'q-title';
+            titleDiv.innerHTML = `<span class="q-num">Q${q.id}</span><span class="q-course">${q.course}</span>`;
+            const qTextDiv = document.createElement('div');
+            qTextDiv.className = 'q-text';
+            qTextDiv.innerText = q.text;
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, optIdx) => {
+                const letter = letters[optIdx];
+                const radioId = `q_${idx}_${letter}`;
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                label.htmlFor = radioId;
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `q_${idx}`;
+                radio.value = letter;
+                radio.id = radioId;
+                radio.addEventListener('change', () => updateAnsweredCount());
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(` ${letter}. ${opt}`));
+                optionsDiv.appendChild(label);
+            });
+
+            card.appendChild(titleDiv);
+            card.appendChild(qTextDiv);
+            card.appendChild(optionsDiv);
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback-icon';
+            feedbackDiv.id = `fb-${idx}`;
+            card.appendChild(feedbackDiv);
+            container.appendChild(card);
+        });
+        updateAnsweredCount();
+    }
+
+    function updateAnsweredCount() {
+        let answered = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const radios = document.getElementsByName(`q_${i}`);
+            if (Array.from(radios).some(r => r.checked)) answered++;
+        }
+        document.getElementById('answeredCounter').innerText = `📌 Answered: ${answered} / ${totalQuestions}`;
+    }
+
+    function computeAndShowResult() {
+        let score = 0;
+        const userSelections = new Array(totalQuestions).fill(null);
+        for (let i = 0; i < totalQuestions; i++) {
+            const radios = document.getElementsByName(`q_${i}`);
+            let selected = null;
+            for (let r of radios) if (r.checked) { selected = r.value; break; }
+            userSelections[i] = selected;
+            if (selected === questionsData[i].answer) score++;
+        }
+
+        document.getElementById('resultPanel').style.display = 'block';
+        document.getElementById('finalScoreText').innerHTML = `🎯 Your Score: ${score} / ${totalQuestions} (${Math.round(score/totalQuestions*100)}%)`;
+
+        let mistakeHtml = `<strong>📖 Review (incorrect or unanswered):</strong><br>`;
+        let mistakeCount = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const selected = userSelections[i];
+            const correct = questionsData[i].answer;
+            if (selected !== correct) {
+                mistakeCount++;
+                const qNum = questionsData[i].id;
+                const shortText = questionsData[i].text.length > 70 ? questionsData[i].text.substring(0,70)+"…" : questionsData[i].text;
+                const correctIdx = "ABCD".indexOf(correct);
+                const correctText = correctIdx !== -1 ? questionsData[i].options[correctIdx] : "";
+                mistakeHtml += `<div class="mistake-item">❌ Q${qNum}: ${shortText}<br> &nbsp;&nbsp;✔ Correct: ${correct}. ${correctText} | Your answer: ${selected ? selected : '(none)'}</div>`;
+            }
+        }
+        if (mistakeCount === 0) mistakeHtml = `<span>🏆 Perfect! No mistakes.</span>`;
+        document.getElementById('mistakeList').innerHTML = mistakeHtml;
+
+        // Highlight cards and show feedback
+        for (let i = 0; i < totalQuestions; i++) {
+            const card = document.getElementById(`card-${i}`);
+            const selected = userSelections[i];
+            const correctAns = questionsData[i].answer;
+            const isCorrect = (selected === correctAns);
+            card.classList.remove('correct-highlight', 'incorrect-highlight');
+            if (selected) {
+                if (isCorrect) card.classList.add('correct-highlight');
+                else card.classList.add('incorrect-highlight');
+            } else {
+                card.classList.add('incorrect-highlight');
+            }
+            const fbDiv = document.getElementById(`fb-${i}`);
+            if (fbDiv) {
+                if (selected && isCorrect) fbDiv.innerHTML = '<span class="correct-badge">✅ Correct</span>';
+                else if (selected && !isCorrect) fbDiv.innerHTML = `<span class="wrong-badge">❌ Wrong (correct: ${correctAns})</span>`;
+                else fbDiv.innerHTML = `<span class="wrong-badge">⚠️ Unanswered (correct: ${correctAns})</span>`;
+            }
+        }
+        document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetAll() {
+        for (let i = 0; i < totalQuestions; i++) {
+            const radios = document.getElementsByName(`q_${i}`);
+            radios.forEach(r => r.checked = false);
+            const card = document.getElementById(`card-${i}`);
+            if (card) card.classList.remove('correct-highlight', 'incorrect-highlight');
+            const fbDiv = document.getElementById(`fb-${i}`);
+            if (fbDiv) fbDiv.innerHTML = '';
+        }
+        updateAnsweredCount();
+        document.getElementById('resultPanel').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderQuestions();
+        document.getElementById('submitBtn').addEventListener('click', computeAndShowResult);
+        document.getElementById('resetBtn').addEventListener('click', resetAll);
+        document.getElementById('scrollTopBtn').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    });
+</script>
+</body>
+</html>
